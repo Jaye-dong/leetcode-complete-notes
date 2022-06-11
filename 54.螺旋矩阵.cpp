@@ -7,23 +7,20 @@ using namespace std;
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        int n = matrix.size();
-        int m;
-        if(n > 0) {
-            m = matrix[0].size();
-        }else{
-            return vector<int>{0};
+        
+        
+        if(matrix.size() == 0) {
+            return vector<int>{};
         }
+        
+        int n = matrix.size();
+        int m = matrix[0].size();
         
         /* 圈数 */
         int loop = min(matrix.size(), matrix[0].size()) / 2;
 
         /* 结果 */
         vector<int> res(n * m, 0);
-
-        /* 中间值 */
-        int midx = n / 2;
-        int midy = m / 2;
 
         /* 开始遍历的值 */
         int startx = 0;
@@ -72,11 +69,11 @@ public:
             
         }
         /* 如果是方阵，这种情况只有一个空洞 */
-        if(n*m % 2 && n == m){
-            res[index] = matrix[midx][midy];
+        if(index == (int)res.size() - 1){
+            res[index] = matrix[startx][starty];
         }
         /* 如果有两个及以上空洞 */
-        if(index < (int)res.size() - 1 && n != m){
+        if(index < (int)res.size() - 1){
             int holo = abs(n-m) + 1;
             if(m > n){
                 for(int i = 0; i < holo; i++){
