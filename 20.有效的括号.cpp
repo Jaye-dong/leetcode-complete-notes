@@ -12,7 +12,7 @@ public:
             else if(c == '[') st.push(']');
             else if(c == '{') st.push('}');
             else if( st.empty() || c != st.top()) return false;
-            else if(c == ')' || c == ']' || c == '}') st.pop();
+            else if(c == st.top()) st.pop();
         }
         return st.empty();
     }
