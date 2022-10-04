@@ -11,23 +11,28 @@ struct TreeNode{
     TreeNode(int x):val(x), left(nullptr), right(nullptr){}
 };
 
-class Solution{
+class Solution {
 public:
-    bool compare(TreeNode * leftNode, TreeNode * rightNode){
-        if(leftNode == nullptr && rightNode == nullptr){
-            return true;
-        }
-        if(!leftNode || !rightNode || (leftNode->val != rightNode->val)){
-            return false;
-        }
+    bool compare(TreeNode* left, TreeNode* right) {
+        if (left == NULL && right != NULL) return false;
+        else if (left != NULL && right == NULL) return false;
+        else if (left == NULL && right == NULL) return true;
+        else if (left->val != right->val) return false;
+        else return compare(left->left, right->left) && compare(left->right, right->right);
 
-        bool sLeft = compare(leftNode->left, rightNode->left);
-        bool sRight = compare(leftNode->right, rightNode->right);
-        bool isSame = sLeft && sRight;
-        return isSame;
     }
-    bool isSameTree(TreeNode* p, TreeNode* q) {
-        return compare(p, q);
+    void traversal(TreeNode* cur, TreeNode* subRoot, bool &res){
+        if(cur == nullptr) return ;
+        if(compare(cur, subRoot)){
+            res = true;
+        }
+        traversal(cur->left, subRoot, res);
+        traversal(cur->right, subRoot, res);
+    }
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        bool res = false;
+        traversal(root, subRoot, res);
+        return res;
     }
 };
 
@@ -81,7 +86,7 @@ int main(){
     }
 
     Solution solution;
-    bool res = solution.isSameTree(root, root2);
+    bool res = solution.isSubtree(root, root2);
 
     cout << res << endl;
     return 0;
