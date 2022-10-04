@@ -13,15 +13,28 @@ struct TreeNode{
 
 class Solution{
 public:
-    int getNodesNum(TreeNode * root){
-        if(root == nullptr) return 0;
-        int leftNodes = getNodesNum(root->left);
-        int rightNodes = getNodesNum(root->right);
-        int TreeNum = 1 + leftNodes + rightNodes;
-        return TreeNum;
-    }    
     int countNodes(TreeNode * root){
-        return getNodesNum(root);
+        if(root == nullptr) return 0;
+        /* judge the tree whether a full binary tree or not */
+        TreeNode * leftNode = root->left;
+        TreeNode * rightNode = root->right;
+        int leftDepth = 0;
+        int rightDepth = 0;
+        while(leftNode){
+            leftNode = leftNode->left;
+            leftDepth++;
+        }
+        while(rightDepth){
+            rightNode = rightNode->right;
+            rightDepth++;
+        }
+        if(leftDepth == rightDepth){
+            return (2 << leftDepth) - 1;
+        }
+        int leftNodesNum = countNodes(root->left);
+        int rightNodesNum = countNodes(root->right);
+        int TreeNum = 1 + leftNodesNum + rightNodesNum;
+        return TreeNum;
     }
 };
 
