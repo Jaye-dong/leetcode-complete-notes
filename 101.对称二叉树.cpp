@@ -14,28 +14,19 @@ struct TreeNode{
 
 class Solution{
 public:
-    bool isSymmetric(TreeNode* root) {
-        bool res = true;
-        if(root == nullptr) return res;
-        queue<TreeNode*> q;
-        q.push(root->left);
-        q.push(root->right);
-        while(!q.empty()){
-            TreeNode * leftNode = q.front(); q.pop();
-            TreeNode * rightNode = q.front(); q.pop();
-            if(!leftNode && !rightNode){
-                continue;
-            }
-            if(!leftNode || !rightNode || (leftNode->val != rightNode->val)){
-                return false;
-            }
-            /* outside */
-            q.push(leftNode->left);
-            q.push(rightNode->right);
-            /* inside */
-            q.push(leftNode->right);
-            q.push(rightNode->left);
+    bool compare(TreeNode* leftNode, TreeNode* rightNode){
+        /* exclude null situation */
+        if(!leftNode && !rightNode) return true;
+        if(!leftNode || !rightNode || (leftNode->val != rightNode->val)){
+            return false;
         }
+        bool outside = compare(leftNode->left, rightNode->right);
+        bool inside = compare(leftNode->right, rightNode->left);
+        bool isSame = outside && inside;
+        return isSame;
+    }
+    bool isSymmetric(TreeNode* root) {
+        bool res = compare(root->left, root->right);
         return res;
     }
 };
