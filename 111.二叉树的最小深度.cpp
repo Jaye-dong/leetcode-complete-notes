@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <climits>
 
 using namespace std;
 
@@ -13,22 +14,26 @@ struct TreeNode{
 
 class Solution{
 public:
-    int getDepth(TreeNode * root){
-        if(root == nullptr) return 0;
-        int leftDepth = getDepth(root->left);
-        int rightDepth = getDepth(root->right);
-        
-        if(root->left == nullptr && root->right != nullptr){
-            return 1 + rightDepth;
+    int res;
+    void getDepth(TreeNode * root, int depth){
+        if(root->left == nullptr && root->right == nullptr){
+            res =  min(depth, res);
+            return;
         }
-        if(root->right == nullptr && root->left != nullptr){
-            return 1 + leftDepth;
+        if(root->left){
+            getDepth(root->left, depth + 1);
         }
-        return 1 + min(leftDepth, rightDepth);
+        if(root->right){
+            getDepth(root->right, depth + 1);
+        }
+        return;
     }
 
     int minDepth(TreeNode * root){
-        return getDepth(root);
+        res = INT_MAX;
+        if(root == nullptr) return 0;
+        getDepth(root, 1);
+        return res;
     }
 };
 
