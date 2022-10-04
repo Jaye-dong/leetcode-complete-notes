@@ -1,5 +1,4 @@
 #include <iostream>
-#include <queue>
 #include <vector>
 #include <unordered_map>
 
@@ -9,29 +8,27 @@ struct TreeNode{
     int val;
     TreeNode * left;
     TreeNode * right;
-    TreeNode(int x): val(x), left(nullptr), right(nullptr){}
+    TreeNode(int x):val(x), left(nullptr), right(nullptr){}
 };
 
 class Solution{
 public:
-    int minDepth(TreeNode * root){
-        int res = 0;
-        queue<TreeNode*> q;
-        if(root == nullptr) return res;
-        q.push(root);
-        while(!q.empty()){
-            int size = q.size();
-            res++;
-            for(int i = 0; i < size; i++){
-                TreeNode * node = q.front();
-                q.pop();
-                /* if encounter a leaf node return the current depth */ 
-                if(node->left == nullptr && node->right == nullptr) return res;
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
-            }
+    int getDepth(TreeNode * root){
+        if(root == nullptr) return 0;
+        int leftDepth = getDepth(root->left);
+        int rightDepth = getDepth(root->right);
+        
+        if(root->left == nullptr && root->right != nullptr){
+            return 1 + rightDepth;
         }
-        return res;
+        if(root->right == nullptr && root->left != nullptr){
+            return 1 + leftDepth;
+        }
+        return 1 + min(leftDepth, rightDepth);
+    }
+
+    int minDepth(TreeNode * root){
+        return getDepth(root);
     }
 };
 
@@ -39,27 +36,27 @@ int main(){
     int n;
     cin >> n;
     vector<int> nums(n);
-    for(int i= 0; i < n; i++){
+    for(int i = 0; i < n; i++){
         cin >> nums[i];
     }
     int i = 0;
     unordered_map<int, TreeNode*> hash;
-    TreeNode * root;
+    hash[i] = new TreeNode(nums[i]);
+    TreeNode * root = hash[i];
     while(i < n){
-        if(i == 0){
-            hash[i] = new TreeNode(nums[i]);
-            root = hash[i];
+        int L = i * 2 + 1;
+        int R = L + 1;
+        if(L < n){
+            hash[L] = new TreeNode(nums[L]);
+            hash[i]->left = hash[L];
         }
-        if(i*2+1 < n){
-            hash[i*2+1] = new TreeNode(nums[i*2+1]);
-            hash[i]->left = hash[i*2+1];
-        }
-        if(i*2+2 < n){
-            hash[i*2 + 2] = new TreeNode(nums[i*2+2]);
-            hash[i]->right = hash[i*2+2];
+        if(R < n){
+            hash[R] = new TreeNode(nums[R]);
+            hash[i]->right = hash[R];
         }
         i++;
     }
+
     Solution solution;
     int res = solution.minDepth(root);
     cout << res << endl;
