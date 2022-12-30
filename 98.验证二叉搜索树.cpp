@@ -64,10 +64,11 @@ public:
     TreeNode * pre = nullptr;
     bool isValidBST(TreeNode* root){
         if(root == nullptr) return true;
-
+        /* 中序遍历 ， 确保中序遍历是严格从小到大 */
         bool left = isValidBST(root->left);
 
         if(pre && pre->val >= root->val) return false;
+        /* 保存上一次的值 */
         pre = root;
 
         bool right = isValidBST(root->right);
