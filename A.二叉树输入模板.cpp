@@ -21,10 +21,10 @@ TreeNode * create(const vector<int> &vec){
         if(i == 0) root = node;
     }
 
-    for(int i = 0; i * 2 + 2 < vec.size();i++){
+    for(int i = 0; i < vec.size(); i++){
         if(vecTree[i] != nullptr){
-            vecTree[i]->left = vecTree[i*2 + 1];
-            vecTree[i]->right = vecTree[i*2 + 2];
+            if(i * 2 + 1 < vec.size()) vecTree[i]->left = vecTree[i*2 + 1];
+            if(i * 2 + 2 < vec.size()) vecTree[i]->right = vecTree[i*2 + 2];
         }
     }
     return root;
