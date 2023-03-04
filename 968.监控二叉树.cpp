@@ -60,24 +60,50 @@ public:
 };
 
 // 根据数组构造二叉树
-TreeNode* construct_binary_tree(const vector<int>& vec) {
-    vector<TreeNode*> vecTree (vec.size(), NULL);
-    TreeNode* root = NULL;
-    for (int i = 0; i < vec.size(); i++) {
-        TreeNode* node = NULL;
-        if (vec[i] != -1) node = new TreeNode(vec[i]);
+// TreeNode* construct_binary_tree(const vector<int>& vec) {
+//     vector<TreeNode*> vecTree (vec.size(), NULL);
+//     TreeNode* root = NULL;
+//     for (int i = 0; i < vec.size(); i++) {
+//         TreeNode* node = NULL;
+//         if (vec[i] != -1) node = new TreeNode(vec[i]);
+//         vecTree[i] = node;
+//         if (i == 0) root = node;
+//     }
+//     for (int i = 0; i * 2 + 1 < vec.size(); i++) {
+//         if (vecTree[i] != NULL) {
+//             vecTree[i]->left = vecTree[i * 2 + 1];
+//             if(i * 2 + 2 < vec.size())
+//             vecTree[i]->right = vecTree[i * 2 + 2];
+//         }
+//     }
+//     return root;
+// }
+
+
+TreeNode * create(vector<int> vec){
+    vector<TreeNode*> vecTree(vec.size(), NULL);
+    TreeNode * root = nullptr;
+    for(int i = 0; i < vec.size(); i++){
+        TreeNode * node = nullptr;
+        if(vec[i] != -1) node = new TreeNode(vec[i]);
         vecTree[i] = node;
-        if (i == 0) root = node;
+        if(i == 0) root = node;
     }
-    for (int i = 0; i * 2 + 1 < vec.size(); i++) {
-        if (vecTree[i] != NULL) {
-            vecTree[i]->left = vecTree[i * 2 + 1];
-            if(i * 2 + 2 < vec.size())
-            vecTree[i]->right = vecTree[i * 2 + 2];
+    for(int i = 0; i < vecTree.size(); i++){
+        if(vecTree[i]){
+            if(i * 2 + 1 < vecTree.size()){
+                vecTree[i]->left = vecTree[i * 2 + 1];
+            }
+            if(i * 2 + 2 < vecTree.size()){
+                vecTree[i]->right = vecTree[i * 2 + 2];
+            }
         }
     }
     return root;
+    
 }
+
+
 
 // 层序打印打印二叉树
 void print_binary_tree(TreeNode* root) {
@@ -116,7 +142,7 @@ int main(){
         cin >> nums[i];
     }
 
-    TreeNode* root = construct_binary_tree(nums);
+    TreeNode* root = create(nums);
     print_binary_tree(root);
     cout << Solution().minCameraCover(root) << endl;
     return 0;
